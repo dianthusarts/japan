@@ -435,33 +435,23 @@
   <!-- PHRASES -->
   <section id="phrases">
     <h2>Essential Japanese Phrases</h2>
-    <p class="section-sub">You don't need to be fluent — but these 15 phrases will genuinely delight your hosts. Japanese people deeply appreciate any attempt.</p>
+    <p class="section-sub">Tap the speaker button to hear each phrase spoken by a female Japanese voice. Works in Chrome, Safari, Edge, and Firefox.</p>
+
+    <div id="tts-status" style="display:none; font-size:13px; color:var(--coral); background:white; border:1px solid var(--warm-mid); border-left:3px solid var(--coral); border-radius:4px; padding:10px 14px; margin-bottom:1rem; line-height:1.5;">
+      Your browser doesn't support speech synthesis, or no Japanese voice is installed. On desktop, try Chrome or Edge. On iPhone/iPad, this works natively in Safari.
+    </div>
+    <div id="voice-info" style="display:none; font-size:12px; color:var(--muted); font-style:italic; margin-bottom:1rem;"></div>
 
     <table class="phrases-table">
       <thead>
         <tr>
+          <th style="width:36px;"></th>
           <th>Japanese</th>
           <th>Pronunciation</th>
           <th>Meaning &amp; when to use</th>
         </tr>
       </thead>
-      <tbody>
-        <tr><td><span class="jp">ありがとうございます</span></td><td><span class="romaji">Arigatou gozaimasu</span></td><td>Thank you (formal) — use this constantly<div class="phrase-note">The more formal version; always safe to use</div></td></tr>
-        <tr><td><span class="jp">すみません</span></td><td><span class="romaji">Sumimasen</span></td><td>Excuse me / Sorry — your most-used word<div class="phrase-note">Getting attention, passing someone, apologizing — all-purpose</div></td></tr>
-        <tr><td><span class="jp">おはようございます</span></td><td><span class="romaji">Ohayou gozaimasu</span></td><td>Good morning<div class="phrase-note">Used until about 10am; your guides will love this</div></td></tr>
-        <tr><td><span class="jp">こんにちは</span></td><td><span class="romaji">Konnichiwa</span></td><td>Hello / Good afternoon<div class="phrase-note">Midday greeting; said with a slight bow</div></td></tr>
-        <tr><td><span class="jp">いただきます</span></td><td><span class="romaji">Itadakimasu</span></td><td>Said before eating — "I humbly receive"<div class="phrase-note">Mandatory before meals. Skipping it is like eating without saying grace</div></td></tr>
-        <tr><td><span class="jp">ごちそうさまでした</span></td><td><span class="romaji">Gochisousama deshita</span></td><td>Said after eating — "Thank you for the meal"<div class="phrase-note">Said to your host or to the restaurant staff as you leave</div></td></tr>
-        <tr><td><span class="jp">おいしい！</span></td><td><span class="romaji">Oishii!</span></td><td>"Delicious!" — use with feeling<div class="phrase-note">One word that will make every chef and host beam</div></td></tr>
-        <tr><td><span class="jp">どこですか？</span></td><td><span class="romaji">Doko desu ka?</span></td><td>"Where is ___?" — point at map or sign<div class="phrase-note">Combine with any noun: "Toire doko desu ka?" = where's the toilet?</div></td></tr>
-        <tr><td><span class="jp">いくらですか？</span><br></td><td><span class="romaji">Ikura desu ka?</span></td><td>"How much does this cost?"<div class="phrase-note">Point at the item; shopkeepers may write the number for you</div></td></tr>
-        <tr><td><span class="jp">写真を撮ってもいいですか？</span></td><td><span class="romaji">Shashin wo totte mo ii desu ka?</span></td><td>"May I take a photo?"<div class="phrase-note">Always ask before photographing people or private spaces</div></td></tr>
-        <tr><td><span class="jp">英語を話せますか？</span></td><td><span class="romaji">Eigo wo hanasemasu ka?</span></td><td>"Do you speak English?"<div class="phrase-note">Asked politely; many younger Japanese will try to help</div></td></tr>
-        <tr><td><span class="jp">わかりません</span></td><td><span class="romaji">Wakarimasen</span></td><td>"I don't understand"<div class="phrase-note">Honest and respectful; better than guessing</div></td></tr>
-        <tr><td><span class="jp">ゆっくり話してください</span></td><td><span class="romaji">Yukkuri hanashite kudasai</span></td><td>"Please speak slowly"<div class="phrase-note">Always met with patience and smiles</div></td></tr>
-        <tr><td><span class="jp">トイレはどこですか？</span></td><td><span class="romaji">Toire wa doko desu ka?</span></td><td>"Where is the restroom?"<div class="phrase-note">Japanese public restrooms are extraordinarily clean — seek them out</div></td></tr>
-        <tr><td><span class="jp">よろしくお願いします</span></td><td><span class="romaji">Yoroshiku onegaishimasu</span></td><td>"I'm in your care" — meet this guide, start this meal<div class="phrase-note">No exact translation; said when beginning any relationship or transaction. Deeply Japanese.</div></td></tr>
-      </tbody>
+      <tbody id="phrases-tbody"></tbody>
     </table>
   </section>
 
@@ -717,6 +707,151 @@ window.addEventListener("scroll", () => {
   let current = "";
   sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
   navLinks.forEach(a => { a.classList.toggle("active", a.getAttribute("href") === "#"+current); });
+});
+</script>
+<style>
+  .speak-btn {
+    background: none;
+    border: 1px solid var(--warm-mid);
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .speak-btn:hover { background: var(--warm-mid); border-color: var(--muted); }
+  .speak-btn.speaking { background: #e6f4ec; border-color: var(--teal); animation: pulse-ring 0.8s ease infinite; }
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(46,107,94,0.3); }
+    50% { box-shadow: 0 0 0 4px rgba(46,107,94,0.1); }
+  }
+</style>
+
+<script>
+const phrases = [
+  { jp:"ありがとうございます", romaji:"Arigatou gozaimasu", meaning:"Thank you (formal) — use this constantly", note:"The more formal version; always safe to use" },
+  { jp:"すみません", romaji:"Sumimasen", meaning:"Excuse me / Sorry — your most-used word", note:"Getting attention, passing someone, apologizing — all-purpose" },
+  { jp:"おはようございます", romaji:"Ohayou gozaimasu", meaning:"Good morning", note:"Used until about 10am; your guides will love this" },
+  { jp:"こんにちは", romaji:"Konnichiwa", meaning:"Hello / Good afternoon", note:"Midday greeting; said with a slight bow" },
+  { jp:"いただきます", romaji:"Itadakimasu", meaning:'Said before eating — "I humbly receive"', note:"Mandatory before meals. Skipping it is like eating without saying grace" },
+  { jp:"ごちそうさまでした", romaji:"Gochisousama deshita", meaning:'Said after eating — "Thank you for the meal"', note:"Said to your host or to the restaurant staff as you leave" },
+  { jp:"おいしい！", romaji:"Oishii!", meaning:'"Delicious!" — use with feeling', note:"One word that will make every chef and host beam" },
+  { jp:"どこですか？", romaji:"Doko desu ka?", meaning:'"Where is ___?" — point at map or sign', note:'Combine with any noun: "Toire doko desu ka?" = where\'s the toilet?' },
+  { jp:"いくらですか？", romaji:"Ikura desu ka?", meaning:'"How much does this cost?"', note:"Point at the item; shopkeepers may write the number for you" },
+  { jp:"写真を撮ってもいいですか？", romaji:"Shashin wo totte mo ii desu ka?", meaning:'"May I take a photo?"', note:"Always ask before photographing people or private spaces" },
+  { jp:"英語を話せますか？", romaji:"Eigo wo hanasemasu ka?", meaning:'"Do you speak English?"', note:"Asked politely; many younger Japanese will try to help" },
+  { jp:"わかりません", romaji:"Wakarimasen", meaning:'"I don\'t understand"', note:"Honest and respectful; better than guessing" },
+  { jp:"ゆっくり話してください", romaji:"Yukkuri hanashite kudasai", meaning:'"Please speak slowly"', note:"Always met with patience and smiles" },
+  { jp:"トイレはどこですか？", romaji:"Toire wa doko desu ka?", meaning:'"Where is the restroom?"', note:"Japanese public restrooms are extraordinarily clean — seek them out" },
+  { jp:"よろしくお願いします", romaji:"Yoroshiku onegaishimasu", meaning:'"I\'m in your care" — meet a guide, start a meal', note:"No exact translation; said when beginning any relationship or transaction. Deeply Japanese." }
+];
+
+const tbody = document.getElementById("phrases-tbody");
+const statusEl = document.getElementById("tts-status");
+const voiceInfoEl = document.getElementById("voice-info");
+
+let femaleJpVoice = null;
+let currentBtn = null;
+
+function pickVoice(voices) {
+  const jpVoices = voices.filter(v => v.lang.startsWith("ja"));
+  if (!jpVoices.length) return null;
+  const female = jpVoices.find(v =>
+    /kyoko|haruka|mizuki|female|woman|hana|siri.*ja|google.*japan.*female/i.test(v.name)
+  );
+  return female || jpVoices[0];
+}
+
+function initVoices() {
+  if (!window.speechSynthesis) {
+    statusEl.style.display = "block";
+    return;
+  }
+  const voices = speechSynthesis.getVoices();
+  if (voices.length) {
+    femaleJpVoice = pickVoice(voices);
+    if (!femaleJpVoice) {
+      statusEl.style.display = "block";
+    } else {
+      voiceInfoEl.textContent = "Voice: " + femaleJpVoice.name + " (" + femaleJpVoice.lang + ")";
+      voiceInfoEl.style.display = "block";
+    }
+  }
+}
+
+if (window.speechSynthesis) {
+  speechSynthesis.addEventListener("voiceschanged", () => {
+    femaleJpVoice = pickVoice(speechSynthesis.getVoices());
+    if (femaleJpVoice) {
+      statusEl.style.display = "none";
+      voiceInfoEl.textContent = "Voice: " + femaleJpVoice.name + " (" + femaleJpVoice.lang + ")";
+      voiceInfoEl.style.display = "block";
+    }
+  });
+  initVoices();
+} else {
+  statusEl.style.display = "block";
+}
+
+function speak(text, btn) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+
+  if (currentBtn && currentBtn !== btn) {
+    currentBtn.textContent = "🔊";
+    currentBtn.classList.remove("speaking");
+  }
+  if (btn.classList.contains("speaking")) {
+    btn.textContent = "🔊";
+    btn.classList.remove("speaking");
+    currentBtn = null;
+    return;
+  }
+
+  const voices = speechSynthesis.getVoices();
+  femaleJpVoice = femaleJpVoice || pickVoice(voices);
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = "ja-JP";
+  utt.rate = 0.85;
+  utt.pitch = 1.1;
+  if (femaleJpVoice) utt.voice = femaleJpVoice;
+
+  btn.textContent = "⏸";
+  btn.classList.add("speaking");
+  currentBtn = btn;
+
+  utt.onend = () => {
+    btn.textContent = "🔊";
+    btn.classList.remove("speaking");
+    currentBtn = null;
+  };
+  utt.onerror = () => {
+    btn.textContent = "🔊";
+    btn.classList.remove("speaking");
+    currentBtn = null;
+  };
+
+  speechSynthesis.speak(utt);
+}
+
+phrases.forEach((p, i) => {
+  const tr = document.createElement("tr");
+  if (i % 2 === 1) tr.style.background = "white";
+  tr.innerHTML = `
+    <td style="padding:10px 8px 10px 14px;">
+      <button class="speak-btn" title="Hear this phrase" aria-label="Speak: ${p.romaji}">🔊</button>
+    </td>
+    <td style="padding:10px 14px; vertical-align:top;"><span class="jp">${p.jp}</span></td>
+    <td style="padding:10px 14px; vertical-align:top;"><span class="romaji">${p.romaji}</span></td>
+    <td style="padding:10px 14px; vertical-align:top;">${p.meaning}<div class="phrase-note">${p.note}</div></td>
+  `;
+  const btn = tr.querySelector(".speak-btn");
+  btn.addEventListener("click", () => speak(p.jp, btn));
+  tbody.appendChild(tr);
 });
 </script>
 </body>
