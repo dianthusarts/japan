@@ -35,8 +35,75 @@
     font-size: 16px;
   }
 
-  /* NAV */
-  nav {
+  /* ITINERARY MAP & CITY VIDEOS */
+  .itinerary-map {
+    width: 100%;
+    max-width: 820px;
+    border-radius: 8px;
+    border: 1px solid var(--warm-mid);
+    display: block;
+    margin: 0 auto 2.5rem;
+  }
+  .map-caption {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: -1.8rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+  .city-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .city-card {
+    background: white;
+    border: 1px solid var(--warm-mid);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .city-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid var(--warm-mid);
+  }
+  .city-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--indigo);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .city-name { font-size: 14px; font-weight: 500; line-height: 1.2; }
+  .city-days { font-size: 11px; color: var(--muted); }
+  .city-video {
+    display: block;
+    padding: 10px 14px 12px;
+    font-size: 12px;
+    color: var(--indigo);
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .city-video::before {
+    content: "▶ ";
+    font-size: 10px;
+    opacity: 0.7;
+  }
+  .city-video:hover { color: var(--red); }
+  .city-video-note {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 0 14px 10px;
+    line-height: 1.4;
+  }
+
+
     position: sticky; top: 0; z-index: 100;
     background: var(--ink);
     display: flex; align-items: center; gap: 0;
@@ -331,6 +398,7 @@
   <a href="#packing">Packing</a>
   <a href="#phrases">Phrases</a>
   <a href="#stops">Stops</a>
+  <a href="#itinerary">Itinerary</a>
 </nav>
 
 <div class="hero">
@@ -556,8 +624,108 @@
             <li>Miyajima Island — the "floating" torii gate of Itsukushima Shrine</li>
             <li>Bullet train Kyoto → Hiroshima → Osaka</li>
           </ul>
-          <div class="stop-context">August 6, 1945. Today Hiroshima is one of Japan's most welcoming cities — its residents have made a conscious identity of peace advocacy. Come prepared emotionally.</div>
+    </div>
+  </section>
+
+  <section id="itinerary">
+    <h2>Tour Map &amp; City Videos</h2>
+    <p class="section-sub">Your route at a glance — plus a short video for every stop from japan-guide.com</p>
+
+    <img src="map.png"
+         class="itinerary-map"
+         alt="Smithsonian Eternal Japan 2026 tour route — Tokyo to Hiroshima">
+    <p class="map-caption">Tokyo → Hakone/Mt. Fuji → Takayama → Shirakawa-go → Kanazawa → Kyoto/Nara → Hiroshima &amp; Miyajima (extension) · Upload map.png alongside index.html to display</p>
+
+    <div class="city-grid">
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">1</div>
+          <div><div class="city-name">Tokyo</div><div class="city-days">Days 2–4 · Meiji Shrine · Asakusa · Imperial Palace</div></div>
         </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=Hr_TbL5ejuQ" target="_blank" rel="noopener">Top 5 Things to Do in Tokyo (japan-guide.com)</a>
+        <div class="city-video-note">japan-guide.com's own channel — reliable, concise, no fluff</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">2</div>
+          <div><div class="city-name">Hakone</div><div class="city-days">Day 5 · Ryokan overnight · Kaiseki · Onsen</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=vIapoWBZAGg" target="_blank" rel="noopener">Top 5 Things to Do in Hakone (japan-guide.com)</a>
+        <div class="city-video-note">Covers the ryokan, open-air museum, and Mt. Fuji views you'll experience on Day 5</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">3</div>
+          <div><div class="city-name">Mt. Fuji Area</div><div class="city-days">Day 5 · Fuji-Hakone-Izu National Park</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=QZQaO3VNL3o" target="_blank" rel="noopener">Top 5 Things to Do Around Mt. Fuji (japan-guide.com)</a>
+        <div class="city-video-note">The mountain you'll see from the park, the museum, and the ryokan window</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">4</div>
+          <div><div class="city-name">Takayama</div><div class="city-days">Days 6–7 · Old Town · Tea ceremony · Sake brewery</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=Avl0V_Ph08U" target="_blank" rel="noopener">Top 5 Things to Do in Takayama (japan-guide.com)</a>
+        <div class="city-video-note">The Sanmachi-suji merchant streets, morning markets, and mountain atmosphere</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">5</div>
+          <div><div class="city-name">Shirakawa-go</div><div class="city-days">Day 8 · UNESCO thatched-roof village</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=iSj822hWNc0" target="_blank" rel="noopener">Shirakawago Travel Guide — Japan's Most Beautiful Village</a>
+        <div class="city-video-note">The gassho-zukuri farmhouses and what makes this UNESCO World Heritage site special</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">6</div>
+          <div><div class="city-name">Kanazawa</div><div class="city-days">Days 8–9 · Kenrokuen · Gold leaf · Geisha district</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=NOfHCBA8Kss" target="_blank" rel="noopener">Top 5 Things to Do in Kanazawa (japan-guide.com)</a>
+        <div class="city-video-note">Kenrokuen, the geisha district, gold leaf gallery, and Omicho Market — all on your Day 9 itinerary</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">7</div>
+          <div><div class="city-name">Kyoto</div><div class="city-days">Days 10–12 · Golden Pavilion · Nijo Castle · Gion farewell dinner</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=2G0Hh8f9Cc8" target="_blank" rel="noopener">Top 5 Things to Do in Kyoto (japan-guide.com)</a>
+        <div class="city-video-note">Japan's cultural capital — you have four days here, the most of anywhere on the tour</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num">8</div>
+          <div><div class="city-name">Nara</div><div class="city-days">Day 11 (day trip) · Great Buddha · Sacred deer · Kasuga Shrine</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=Kbz3E1INyVw" target="_blank" rel="noopener">Top 5 Things to Do in Nara (japan-guide.com)</a>
+        <div class="city-video-note">Japan's 8th-century capital — Todai-ji, the world's largest bronze Buddha, and 1,000 freely roaming deer</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num" style="background:var(--coral)">H</div>
+          <div><div class="city-name">Hiroshima</div><div class="city-days">Extension Day 13 · Peace Museum · Atomic Bomb Dome</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=Qy8SCnJWEkE" target="_blank" rel="noopener">Top 5 Things to Do in Hiroshima (japan-guide.com)</a>
+        <div class="city-video-note">A city rebuilt as a symbol of peace — the Peace Park, museum, and Dome are all on Day 13</div>
+      </div>
+
+      <div class="city-card">
+        <div class="city-card-header">
+          <div class="city-num" style="background:var(--coral)">M</div>
+          <div><div class="city-name">Miyajima Island</div><div class="city-days">Extension Day 14 · Floating torii · Itsukushima Shrine</div></div>
+        </div>
+        <a class="city-video" href="https://www.youtube.com/watch?v=EBGmwKz8d18" target="_blank" rel="noopener">Top 5 Best Places to Visit in Miyajima (2025)</a>
+        <div class="city-video-note">The sacred island's floating torii, Itsukushima Shrine, and Daisho-in Temple — all on your Day 14 itinerary</div>
       </div>
 
     </div>
